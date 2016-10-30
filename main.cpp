@@ -7,14 +7,22 @@
 //
 
 #include "instance.hpp"
+#include "simann.hpp"
 
 #include <iostream>
 #include <fstream>
+#include <sys/time.h>
 
 void printTour(std::vector<int> &tour) { // TODO just for testing early
     for (int i = 0; i < tour.size(); i++) {
         std::cout << tour[i] << std::endl;
     }
+}
+
+int getCurrTime() {
+	struct timeval tp;
+	gettimeofday(&tp, NULL);
+	return (tp.tv_sec * 1000 + tp.tv_usec / 1000);
 }
 
 int main() {
@@ -26,10 +34,15 @@ int main() {
     tsp::instance map(n); // Skapar instans-objekt
     std::vector<int> tour;
     tour = std::vector<int>(n);
-    
+    long int startTime = getCurrTime();
+    sa(tour, map, startTime);
     map.readCities(std::cin);
     map.computeDistances();
     map.nneighbour(tour);
     printTour(tour);
 
 }
+
+
+
+
