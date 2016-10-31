@@ -40,7 +40,9 @@ int getCurrTime() {
 // to compile in terminal: g++ -g -O2 -static -std=gnu++11 *.cpp -o theprogram. Fuck READMEs
 
 int main() {
-    std::ifstream in("test1000.in");
+
+    long int startTime = getCurrTime();
+    std::ifstream in("test.in");
     std::cin.rdbuf(in.rdbuf());
     
     size_t n;
@@ -55,6 +57,12 @@ int main() {
     map.computeDistances();
     map.nneighbour(tour);
     
+    sa(tour, map, startTime); //Run SA
+
+
+
+    std::cout << "nneighbour:" << std::endl;
+    printTour(tour);
     //std::cout << "nneighbour:" << std::endl;
     //printTour(tour);
     //printTourWeight(tour, map);
