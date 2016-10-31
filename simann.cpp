@@ -14,9 +14,11 @@ namespace tsp {
     void sa(std::vector<int> tour, instance map, long startTime) {
     	//Fetches current time.
 		long int currTime = getCurrTime();
+		int temperature = 14;
+
 
     	while(currTime - startTime < 1950){
-    		//1. New point
+    		//1. Pick two new points and reverse them.
     		//2. Jump to point with some probability
     		//3. Decrease temperature.
     		currTime = getCurrTime();
