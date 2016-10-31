@@ -90,8 +90,6 @@ namespace tsp {
             edgeList[(*mst)[i].u].push_back((*mst)[i]);
             edgeList[(*mst)[i].v].push_back((*mst)[i]);
         }
-        
-        // TODO iterera över edgelist och sortera enligt vertexComp!!
             
         bfsQ.push(0);
         int stop = 0;
