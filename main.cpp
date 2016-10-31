@@ -55,6 +55,8 @@ int getCurrTime() {
 // to compile in terminal: g++ -g -O2 -static -std=gnu++11 *.cpp -o theprogram. Fuck READMEs
 
 int main() {
+    
+    long int startTime = getCurrTime();
     const bool debug = true;
     const bool fileIn = true;
     
