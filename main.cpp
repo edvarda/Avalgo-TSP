@@ -35,6 +35,10 @@ int getCurrTime() {
     return (int) (tp.tv_sec * 1000 + tp.tv_usec / 1000);
 }
 
+
+
+// to compile in terminal: g++ -g -O2 -static -std=gnu++11 *.cpp -o theprogram. Fuck READMEs
+
 int main() {
     std::ifstream in("test1000.in");
     std::cin.rdbuf(in.rdbuf());
