@@ -13,9 +13,12 @@ namespace tsp {
 
     void sa(std::vector<int> &tour, instance map, long startTime) {
 
-    	long int currTime = getCurrTime();//Fetches current time.
-		int temperature = 50000;
-		int konstant = 1000;
+    	//long int currTime = getCurrTime();//Fetches current time.
+		int temperature = 10000/tour.size();
+		int konstant = 1;
+		int iterations = 60000;
+		int temperatureLowerCounterMax = iterations/temperature;
+		int temperatureLowerCounter = temperatureLowerCounterMax;
 		int city1;
 		int city2;
 
@@ -23,7 +26,7 @@ namespace tsp {
 
 
     	//while(currTime - startTime < 1950){
-		while(temperature > 2){
+		while(iterations > 1){
 			size_t weight = 0;
 			for (int i = 0; i < tour.size()-1; i++) {
 				weight += map.distances[tour[i]][tour[i+1]];
@@ -31,7 +34,19 @@ namespace tsp {
 			//std::cout << "weight of tour: " << weight << std::endl;
     		//1. Pick two new points and reverse them.
     		city1 = rand() % tour.size();
-    		city2 = rand() % tour.size();
+
+    		int cityDifference = (rand() % 75) + 1;
+    		if(city1+cityDifference < tour.size()){
+    			city2 = city1+cityDifference;
+    		} else if (city1-cityDifference >= 0) {
+    			city2 = city1-cityDifference;
+    		} else if (city1-1 >=0){
+    			city2 = city1-1;
+    		} else {
+    			city2 = city1+1;
+    		}
+
+    		//city2 = rand() % tour.size();
     		std::vector<int> alternativeTour = reverse(tour, city1, city2);
 
     		//2. Evaluate solution. If it is better change it.
@@ -62,7 +77,14 @@ namespace tsp {
     			}
     		}
     		//3. Decrease temperature.
-    		temperature-=1;
+
+    		iterations-=1;
+    		if(temperatureLowerCounter <= 0){
+    			temperature -= 1;
+    			temperatureLowerCounter = temperatureLowerCounterMax;
+    		} else {
+    			temperatureLowerCounter -= 1;
+    		}
     		//currTime = getCurrTime();
 
 

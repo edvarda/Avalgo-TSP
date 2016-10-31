@@ -70,13 +70,13 @@ int main() {
     map.readCities(std::cin);
     map.computeDistances();
     map.nneighbour(tour);
-    
+
+    //printTourWeight(tour, map);
+
     sa(tour, map, startTime); //Run SA
 
-    std::cout << "nneighbour:" << std::endl;
-    printTour(tour);
     //std::cout << "nneighbour:" << std::endl;
-    //printTour(tour);
+    printTour(tour);
     //printTourWeight(tour, map);
     
     //std::cout << "mst-walk:" << std::endl;
@@ -86,9 +86,11 @@ int main() {
     //printTourWeight(tour, map);
     
     //std::cout << "christofides:" << std::endl;
-    std::vector<int> christTour = std::vector<int>(map.size);
-    tsp::christofides(map,christTour);
-    printTour(christTour);
-    printTourWeight(christTour, map);
+    //std::vector<int> christTour = std::vector<int>(map.size);
+    //tsp::christofides(map,christTour);
+    //printTourWeight(christTour, map);
+    //sa(christTour, map, startTime); //Run SA
+    //printTour(christTour);
+    //printTourWeight(christTour, map);
     //printTourWeightToFile(tour, map, "nneighbour and SA");
 }
