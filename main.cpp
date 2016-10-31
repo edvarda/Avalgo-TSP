@@ -14,6 +14,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 #include <sys/time.h>
 
 void printTour(std::vector<int> &tour) { // TODO just for testing early
@@ -29,6 +30,19 @@ void printTourWeight(std::vector<int> &tour, tsp::instance map) {
     }
     std::cout << "weight of tour: " << weight << std::endl;
 }
+
+void printTourWeightToFile(std::vector<int> &tour, tsp::instance map, std::string fileName) {
+    size_t weight = 0;
+    for (int i = 0; i < tour.size()-1; i++) {
+        weight += map.distances[tour[i]][tour[i+1]];
+    }
+    std::ofstream myfile;
+	myfile.open ("file.txt");
+	myfile << "weight of tour: " << weight;
+	myfile.close();
+}
+
+
 
 int getCurrTime() {
     struct timeval tp;
