@@ -17,6 +17,7 @@ namespace tsp {
         mst = tsp::kruskal(map); // Get a minimum spanning tree of the graph using kruskals algorithm
         matchOdds(mst, map);
         getHamiltonTour(mst,map,tour);
+        delete mst;
     }
  
     void matchOdds(std::vector<tsp::edge> *mst, tsp::instance &map) {
@@ -62,6 +63,7 @@ namespace tsp {
         std::stack<int> eulerStack = std::stack<int>();
         std::vector<int> eulerTour = std::vector<int>();
         std::vector<std::vector<bool> > edges = std::vector<std::vector<bool> >(map.size);
+        
         for (auto it = edges.begin(); it != edges.end(); it++) {(*it) = std::vector<bool>(map.size,false);}
         for (int i = 0; i < mst->size(); i++) { // Gör om edgelisten. Ja, det är ineffektivt.
             edges[(*mst)[i].u][(*mst)[i].v] = true;
@@ -72,7 +74,6 @@ namespace tsp {
         int neighbour;
         
         // Nu ska vi bygga en euler-vandring
-        
         do {
             if (getNeighbour(edges, current) != -1) {
                 eulerStack.push(current); // we push our node on a stack.
@@ -85,10 +86,10 @@ namespace tsp {
                 current = eulerStack.top();
                 eulerStack.pop();
             }
-            //for (auto it = edges[];)
         } while (!eulerStack.empty());
         
         // Sen ska vi plocka ut en hamiltoncykel
+        
         tour.clear();
         std::vector<bool> visited = std::vector<bool>(map.size, false);
         for (auto it = eulerTour.begin(); it != eulerTour.end(); it++) {
@@ -97,9 +98,10 @@ namespace tsp {
                 tour.push_back(*it);
             }
         }
+        
     }
     
-    int getNeighbour(std::vector<std::vector<bool>> edges, int v) {
+    int getNeighbour(std::vector<std::vector<bool>> &edges, int v) {
         for (auto it = edges[v].begin(); it != edges[v].end(); it++) {
                 if (*it == true) {return (int) (it - edges[v].begin());}
         }

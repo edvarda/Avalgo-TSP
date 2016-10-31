@@ -16,6 +16,6 @@ namespace tsp {
 
     void christofides(tsp::instance &map, std::vector<int> &tour);
     void matchOdds(std::vector<tsp::edge> *mst, tsp::instance &map);
-    int getNeighbour(std::vector<std::vector<bool>> edges, int v);
+    int getNeighbour(std::vector<std::vector<bool>> &edges, int v);
     void getHamiltonTour(std::vector<tsp::edge> *mst, tsp::instance &map, std::vector<int> &tour);
 }

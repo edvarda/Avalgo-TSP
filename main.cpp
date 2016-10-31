@@ -10,6 +10,7 @@
 #include "kruskal.hpp"
 #include "simann.hpp"
 #include "christofides.hpp"
+#include "tests.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -40,42 +41,50 @@ int getCurrTime() {
 // to compile in terminal: g++ -g -O2 -static -std=gnu++11 *.cpp -o theprogram. Fuck READMEs
 
 int main() {
-
-    long int startTime = getCurrTime();
-    std::ifstream in("test.in");
-    std::cin.rdbuf(in.rdbuf());
+    const bool debug = true;
+    const bool fileIn = true;
+    
+    if (fileIn) {
+        std::ifstream in("test1000.in");
+        std::cin.rdbuf(in.rdbuf());
+    }
+    
     
     size_t n;
     std::cin >> n; // Läs in storlek på problemet
     tsp::instance map(n); // Skapar instans-objekt
     std::vector<int> tour;
-    //std::vector<tsp::edge> *mst; // testar kruskal
     tour = std::vector<int>(n);
-    //long int startTime = getCurrTime();
-    //sa(tour, map, startTime);
+    
+    /*
+    long int startTime = getCurrTime();
+    sa(tour, map, startTime);
+    */
+    
     map.readCities(std::cin);
     map.computeDistances();
+
+    /*
     map.nneighbour(tour);
-    
-    sa(tour, map, startTime); //Run SA
-
-
-
     std::cout << "nneighbour:" << std::endl;
     printTour(tour);
-    //std::cout << "nneighbour:" << std::endl;
-    //printTour(tour);
-    //printTourWeight(tour, map);
+    printTourWeight(tour, map);
+    */
     
-    //std::cout << "mst-walk:" << std::endl;
-    //mst = tsp::kruskal(map);
-    //tsp::makePreorderWalk(tour, mst);
-    //printTour(tour);
-    //printTourWeight(tour, map);
+    /*
+    std::cout << "mst-walk:" << std::endl;
+    std::vector<tsp::edge> *mst;
+    mst = tsp::kruskal(map);
+    tsp::makePreorderWalk(tour, mst);
+    printTourWeight(tour, map);
+    */
     
-    //std::cout << "christofides:" << std::endl;
-    std::vector<int> christTour = std::vector<int>(map.size);
-    tsp::christofides(map,christTour);
-    printTour(christTour);
-    printTourWeight(christTour, map);
+    if (debug) {std::cout << "christofides:" << std::endl;}
+    tsp::christofides(map,tour);
+    printTour(tour);
+    if (debug) {printTourWeight(tour, map);}
+    
+    if (debug) {
+        tsp::validateTour(tour, map);
+    }
 }
