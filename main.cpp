@@ -34,7 +34,13 @@ int getCurrTime() {
     return (tp.tv_sec * 1000 + tp.tv_usec / 1000);
 }
 
+
+
+// to compile in terminal: g++ -g -O2 -static -std=gnu++11 *.cpp -o theprogram. Fuck READMEs
+
 int main() {
+
+    long int startTime = getCurrTime();
     std::ifstream in("test.in");
     std::cin.rdbuf(in.rdbuf());
     
@@ -44,21 +50,23 @@ int main() {
     std::vector<int> tour;
     std::vector<tsp::edge> *mst; // testar kruskal
     tour = std::vector<int>(n);
-    long int startTime = getCurrTime();
-    sa(tour, map, startTime);
     map.readCities(std::cin);
     map.computeDistances();
     map.nneighbour(tour);
     
+    sa(tour, map, startTime); //Run SA
+
+
+
     std::cout << "nneighbour:" << std::endl;
-    //printTour(tour);
-    printTourWeight(tour, map);
+    printTour(tour);
+    //printTourWeight(tour, map);
     
     std::cout << "mst-walk:" << std::endl;
     mst = tsp::kruskal(map);
     tsp::makePreorderWalk(tour, mst);
-    //printTour(tour);
-    printTourWeight(tour, map);
+    printTour(tour);
+    //printTourWeight(tour, map);
 
 
 

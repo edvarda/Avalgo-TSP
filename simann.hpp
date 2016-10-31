@@ -10,14 +10,18 @@
 #define simann_hpp
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <vector>
 #include <algorithm>
 #include <sys/time.h>
+#include <iostream>
+#include <fstream>
 #include "instance.hpp"
 
 #endif /* simann_hpp */
 namespace tsp {
 
-    void sa(std::vector<int> tour, instance map, long startTime);
+    void sa(std::vector<int> &tour, instance map, long startTime);
     int getCurrTime();
+    void reverse(std::vector<int> &tour, int city1, int city2);
 }
