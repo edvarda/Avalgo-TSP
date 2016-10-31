@@ -14,6 +14,7 @@
 #include <unordered_map>
 #include "point.hpp"
 
+
 namespace tsp {
     class instance {
         
@@ -25,11 +26,11 @@ namespace tsp {
         void readCities(std::istream& in);
         void computeDistances();
         void nneighbour(std::vector<int> &tour);
+        std::vector<std::vector<int>> distances;
         
     private:
         size_t size;
         std::vector<point> cities;
-        std::vector<std::vector<int>> distances;
     };
 }
 

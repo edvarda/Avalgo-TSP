@@ -25,8 +25,8 @@ namespace tsp {
         tour(size_t max) : max_size(max), size(0), stops(std::vector<stop>(max)) {}
         
         
-        
     private:
+        std::vector<int>;
         size_t max_size;
         size_t size;
         std::vector<stop> stops;
