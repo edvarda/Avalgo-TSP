@@ -24,6 +24,6 @@ namespace tsp {
 
     void sa(std::vector<int> &tour, instance map, long startTime);
     int getCurrTime();
-    std::vector<int> reverse(std::vector<int> tour, int city1, int city2);
-    int evaluate(std::vector<int> &tour, tsp::instance &map);
+    void reverse(std::vector<int> &tour, int city1, int city2);
+    int evaluate(std::vector<int> &tour, tsp::instance &map, int &city1, int &city2);
 }
