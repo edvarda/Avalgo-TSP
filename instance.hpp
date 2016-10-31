@@ -21,7 +21,7 @@ namespace tsp {
     public:
         instance(size_t n) :    size(n),
                                 cities(std::vector<point>(n)),
-                                distances(std::vector<std::vector<int>>(n)) {}
+                                distances(std::vector<std::vector<int> >(n)) {}
         
         void readCities(std::istream& in);
         void computeDistances();

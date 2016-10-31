@@ -6,6 +6,7 @@
 //  Copyright © 2016 Edvard Ahlsén. All rights reserved.
 //
 
+#include <algorithm>
 #include "kruskal.hpp"
 #include <unordered_map>
 #include <queue>

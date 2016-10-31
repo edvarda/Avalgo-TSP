@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sys/time.h>
 
 void printTour(std::vector<int> &tour) { // TODO just for testing early
     for (int i = 0; i < tour.size(); i++) {
@@ -36,7 +37,8 @@ int main() {
     std::vector<int> tour;
     std::vector<tsp::edge> *mst; // testar kruskal
     tour = std::vector<int>(n);
-    
+    long int startTime = getCurrTime();
+    sa(tour, map, startTime);
     map.readCities(std::cin);
     map.computeDistances();
     map.nneighbour(tour);
