@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <vector>
 #include <algorithm>
 #include <sys/time.h>
@@ -23,5 +24,6 @@ namespace tsp {
 
     void sa(std::vector<int> &tour, instance map, long startTime);
     int getCurrTime();
-    void reverse(std::vector<int> &tour, int city1, int city2);
+    std::vector<int> reverse(std::vector<int> tour, int city1, int city2);
+    int evaluate(std::vector<int> &tour, tsp::instance &map);
 }
