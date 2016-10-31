@@ -8,6 +8,7 @@
 
 #include "instance.hpp"
 #include "kruskal.hpp"
+#include "simann.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -25,6 +26,12 @@ void printTourWeight(std::vector<int> &tour, tsp::instance map) {
         weight += map.distances[tour[i]][tour[i+1]];
     }
     std::cout << "weight of tour: " << weight << std::endl;
+}
+
+int getCurrTime() {
+    struct timeval tp;
+    gettimeofday(&tp, NULL);
+    return (tp.tv_sec * 1000 + tp.tv_usec / 1000);
 }
 
 int main() {
@@ -52,4 +59,8 @@ int main() {
     tsp::makePreorderWalk(tour, mst);
     //printTour(tour);
     printTourWeight(tour, map);
+
+
+
+
 }
