@@ -9,6 +9,7 @@
 #include "instance.hpp"
 #include "kruskal.hpp"
 #include "simann.hpp"
+#include "christofides.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -31,36 +32,38 @@ void printTourWeight(std::vector<int> &tour, tsp::instance map) {
 int getCurrTime() {
     struct timeval tp;
     gettimeofday(&tp, NULL);
-    return (tp.tv_sec * 1000 + tp.tv_usec / 1000);
+    return (int) (tp.tv_sec * 1000 + tp.tv_usec / 1000);
 }
 
 int main() {
-    std::ifstream in("test.in");
+    std::ifstream in("test1000.in");
     std::cin.rdbuf(in.rdbuf());
     
     size_t n;
     std::cin >> n; // Läs in storlek på problemet
     tsp::instance map(n); // Skapar instans-objekt
     std::vector<int> tour;
-    std::vector<tsp::edge> *mst; // testar kruskal
+    //std::vector<tsp::edge> *mst; // testar kruskal
     tour = std::vector<int>(n);
-    long int startTime = getCurrTime();
-    sa(tour, map, startTime);
+    //long int startTime = getCurrTime();
+    //sa(tour, map, startTime);
     map.readCities(std::cin);
     map.computeDistances();
     map.nneighbour(tour);
     
-    std::cout << "nneighbour:" << std::endl;
+    //std::cout << "nneighbour:" << std::endl;
     //printTour(tour);
-    printTourWeight(tour, map);
+    //printTourWeight(tour, map);
     
-    std::cout << "mst-walk:" << std::endl;
-    mst = tsp::kruskal(map);
-    tsp::makePreorderWalk(tour, mst);
+    //std::cout << "mst-walk:" << std::endl;
+    //mst = tsp::kruskal(map);
+    //tsp::makePreorderWalk(tour, mst);
     //printTour(tour);
-    printTourWeight(tour, map);
-
-
-
-
+    //printTourWeight(tour, map);
+    
+    //std::cout << "christofides:" << std::endl;
+    std::vector<int> christTour = std::vector<int>(map.size);
+    tsp::christofides(map,christTour);
+    printTour(christTour);
+    printTourWeight(christTour, map);
 }

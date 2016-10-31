@@ -27,9 +27,10 @@ namespace tsp {
         void computeDistances();
         void nneighbour(std::vector<int> &tour);
         std::vector<std::vector<int>> distances;
+        size_t size;
         
     private:
-        size_t size;
+        
         std::vector<point> cities;
     };
 }
