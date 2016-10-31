@@ -26,7 +26,6 @@ namespace tsp {
         
         
     private:
-        std::vector<int>;
         size_t max_size;
         size_t size;
         std::vector<stop> stops;
