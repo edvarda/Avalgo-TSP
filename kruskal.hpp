@@ -11,8 +11,10 @@
 
 #include <stdio.h>
 #include <vector>
+#include <algorithm>
+#include "instance.hpp"
 
-#endif /* kruskal_hpp */
+
 namespace tsp {
     struct edge {
         int u,v,w;
@@ -29,8 +31,11 @@ namespace tsp {
         subset() : parent(-1), rank(-1) {}
     };
 
-    void kruskal(std::vector<std::vector<int>> distances);
-    int find(std::vector<subset> subsets, int u);
-    void doUnion(std::vector<subset> subsets, int u, int v);
+    std::vector<edge>* kruskal(tsp::instance);
+    void makePreorderWalk(std::vector<int> &tour, std::vector<edge> *mst);
+    int find(std::vector<subset> &subsets, int u);
+    void doUnion(std::vector<subset> &subsets, int u, int v);
     int edgeCompare(const void* a, const void* b);
 }
+
+#endif /* kruskal_hpp */

@@ -40,7 +40,6 @@ namespace tsp {
         std::vector<bool> visited(size,false);
         currentStop = 0;
         
-        
         for (int i = 0 ; i < size ; i++) {
             min = 10000000; // 10^7 should be strictly larger than the distance between any 2 points.
             visited[currentStop] = true;

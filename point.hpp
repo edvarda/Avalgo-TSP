@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 
-#endif /* point_hpp */
+
 
 namespace tsp {
 
@@ -21,3 +21,5 @@ namespace tsp {
         
     };
 }
+
+#endif /* point_hpp */
