@@ -46,7 +46,7 @@ namespace tsp {
     }
     
     // Bygg upp mst genom att välja minsta edgen, kolla om den kan läggas till utan att skapa en cykel.
-    std::vector<edge>* kruskal(instance map) {
+    std::vector<edge>* kruskal(instance &map) {
         std::vector<std::vector<int> > distances = map.distances;
         size_t V = distances.size();
         std::vector<edge> *mst = new std::vector<edge>();

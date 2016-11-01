@@ -14,11 +14,26 @@ namespace tsp {
         std::vector<bool> visited = std::vector<bool>(map.size, false);
         for (int i = 0; i<tour.size(); i++) {
             if (visited[tour[i]]) {
-                std::cerr << "Invalid tour: " << i << " visited more than once\n";
+                //exit(1);
+                //std::cerr << "Invalid tour: " << i << " visited more than once\n";
             }
             visited[tour[i]] = true;
         }
         assert(tour.size() == map.size);
+        if (tour.size() != map.size) {
+            //exit(1);
+        }
         return false;
+    }
+    
+    bool validateEdges(tsp::instance &map) {
+        for (int i = 0; i < map.size; i++) {
+            for (int j = 0; j < map.size; j++) {
+                if (map.distances[i][j] != map.distances[j][i]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

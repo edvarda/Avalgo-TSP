@@ -31,7 +31,7 @@ namespace tsp {
         subset() : parent(-1), rank(-1) {}
     };
 
-    std::vector<edge>* kruskal(tsp::instance);
+    std::vector<edge>* kruskal(tsp::instance &map);
     void makePreorderWalk(std::vector<int> &tour, std::vector<edge> *mst);
     int find(std::vector<subset> &subsets, int u);
     void doUnion(std::vector<subset> &subsets, int u, int v);

@@ -25,7 +25,7 @@ namespace tsp {
             distances[i] = (std::vector<int>(size,0));
             for (size_t j = 0; j < size; j++) {
                 if (i == j) {
-                    distances[i][j] = 0;
+                    distances[i][j] = -1;
                 } else {
                     dx = cities[i].x - cities[j].x;
                     dy = cities[i].y - cities[j].y;
@@ -48,7 +48,7 @@ namespace tsp {
             for (int j = 0 ; j < size ; j++) {
                 if (visited[j]) {continue;}
                 distance = distances[i][j];
-                if (distance < min && distance != 0) {
+                if (distance < min && distance != -1) {
                     min = distance;
                     nearestStop = j;
                 }
