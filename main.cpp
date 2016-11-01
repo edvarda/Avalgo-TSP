@@ -59,8 +59,8 @@ int getCurrTime() {
 
 int main() {
     long int startTime = getCurrTime();
-    const bool debug = false;
-    const bool fileIn = false;
+    const bool debug = true;
+    const bool fileIn = true;
     std::ifstream in;
     if (fileIn) {
         in = std::ifstream("test1000.in");
@@ -110,8 +110,9 @@ int main() {
     
     if (debug) {std::cout << "christofides:" << std::endl;}
     tsp::christofides(map,tour);
-    //tsp::validateTour(tour, map);
+    
     if (tour.size() != map.size) {
+    //if (false) {
         tour = std::vector<int>(n);
         map.nneighbour(tour);
         tsp::two_opt(map,tour);
@@ -119,12 +120,28 @@ int main() {
         exit(0);
     }
     
-    if (debug) {printTourWeight(tour, map);}
+    if (debug) {
+        printTourWeight(tour, map);
+    }
+    std::vector<int> tourcopy = tour;
+    
+    if (debug) { std::cerr << "using 2-opt" << std::endl;}
     
     tsp::two_opt(map,tour);
-    printTour(tour);
-    if (debug) {printTourWeight(tour, map);}
+    
     if (debug) {
-        
+        printTourWeight(tour, map);
+        std::cerr << "using fast-2-opt" << std::endl;
+    }
+    
+    tsp::fast_two_opt(map,tourcopy);
+    
+    //printTour(tour);
+    
+    if (debug) {  
+        printTourWeight(tourcopy, map);
+    }
+    if (debug) {
+        tsp::validateTour(tour, map);
     }
 }

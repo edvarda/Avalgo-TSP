@@ -17,7 +17,8 @@ namespace tsp {
 
     struct point {
         double x,y;
-        point(double x = 0, double y = 0): x(x), y(y) {};
+        int which_slot;
+        point(double x = 0, double y = 0): x(x), y(y), which_slot(-1) {};
         
     };
 }

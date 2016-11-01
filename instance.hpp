@@ -21,17 +21,21 @@ namespace tsp {
     public:
         instance(size_t n) :    size(n),
                                 cities(std::vector<point>(n)),
-                                distances(std::vector<std::vector<int> >(n)) {}
+                                distances(std::vector<std::vector<int> >(n)),
+                                nbhd(std::vector<std::vector<int>>(n)) {}
         
         void readCities(std::istream& in);
         void computeDistances();
         void nneighbour(std::vector<int> &tour);
         std::vector<std::vector<int>> distances;
+        std::vector<std::vector<int>> nbhd;
         size_t size;
+        std::vector<point> cities;
+        int min_link, max_link;
         
     private:
         
-        std::vector<point> cities;
+        
     };
 }
 

@@ -23,16 +23,40 @@ namespace tsp {
 
     int getWeight(tsp::instance &map, std::vector<int> &tour) {
         int w = 0;
-        for (int i = 0; i < tour.size()-1; i++) {
-            w += map.distances[tour[i]][tour[i+1]];
+        int j = 0;
+        for (int i = 0; i < tour.size(); i++) {
+            j = i+1 % tour.size();
+            w += map.distances[tour[i]][tour[j]];
         }
-        w += map.distances[tour[tour.size()-1]][tour[0]];
         return w;
     }
 
     void printTour(std::vector<int> &tour) { // TODO just for testing early
         for (int i = 0; i < tour.size(); i++) {
             std::cout << tour[i] << std::endl;
+        }
+    }
+    
+    void updateMinLink(tsp::instance &map, std::vector<int> &tour) {
+        int min_found = 10000000; // candidate for min_link
+        for (int t = 0; t < map.size; ++t) {
+            int tn = (t+1 % map.size);
+            if (map.distances[tour[t]][tour[tn]] < min_found) {
+                min_found = map.distances[tour[t]][tour[tn]];
+            }
+        }
+        map.min_link = min_found;
+    }
+    
+    void updateWhichSlot(tsp::instance &map, std::vector<int> &tour) {
+        for (int t = 0; t < map.size; ++t) {
+            map.cities[tour[t]].which_slot = t;
+        }
+    }
+    
+    void updateWhichSlot(tsp::instance &map, std::vector<int> &tour, int from, int to) {
+        for (int t = from-2; t < to+2; ++t) {
+            map.cities[tour[t]].which_slot = t;
         }
     }
 
@@ -58,9 +82,15 @@ namespace tsp {
     void reverse_swap(std::vector<int> &tour, int i, int j) {
         std::reverse(tour.begin()+i,tour.begin()+j+1);
     }
+    
+    void reverse_swap2(std::vector<int> &tour, int v1, int u2) {
+        std::reverse(tour.begin()+v1,tour.begin()+u2+1);
+    }
+
 
     void two_opt(tsp::instance &map, std::vector<int> &tour) {
-        
+        int iter = 0;
+        int impro = 0;
         size_t size = map.size;
         int shortest, candidate, original, before, after;
         bool improved = true;
@@ -81,20 +111,74 @@ namespace tsp {
                         candidate = map.distances[tour[before]][tour[k]]+map.distances[tour[i]][tour[after]];
                         assert(candidate > 0);
                         if ( candidate < original ) {
-                            //tour = swap_two(tour, tour[i], tour[k]);
-                            //int beforeSwap = getWeight(map, tour);
+                            iter++;
                             reverse_swap(tour, i, k);
-                            //int afterSwap = getWeight(map, tour);
-                            //std::cerr << beforeSwap << " " << afterSwap << std::endl;
                             improved = true;
-                            //tour.swap(new_tour);
-                            //shortest = getWeight(map,tour);
-                            //assert(beforeSwap > afterSwap);
+                            impro += (original - candidate);
                         }
                     }  
                 }
             }
             if (getCurrTimeK() > startTime+1000) { break; }
         }
+        std::cerr << "old-opt-iter: " << iter << std::endl;
+        std::cerr << "old-opt-impro: " << impro << std::endl;
+    }
+    
+    void fast_two_opt(tsp::instance &map, std::vector<int> &tour) {
+        int iter = 0;
+        int impro = 0;
+        int impro2 = 0;
+        updateMinLink(map,tour);
+        updateWhichSlot(map, tour);
+        
+        int u1,u2,v1,v2;
+        int currentLink, candidateMove;
+        int c2;
+        bool improved;
+        long int startTime = getCurrTimeK();
+        improved = true;
+        int tourLength;
+        while (improved) {
+            improved = false;
+            tourLength = getWeight(map, tour);
+            for (v1 = 0; v1 < map.size; ++v1) {// Loop over tour
+                u1 = (v1 - 1 + map.size) % map.size;
+                for (int j2 = 0; j2 < map.size; ++j2) {
+                        c2 = map.nbhd[tour[v1]][j2]; // store the j2:th closest city to u.
+                        v2 = map.cities[c2].which_slot;
+                        u2 = (v2 - 1 + map.size) % map.size;
+                        if (map.distances[tour[v1]][tour[v2]]+map.min_link >
+                            map.distances[tour[u1]][tour[v1]]+map.max_link) {
+                            break; // out of j2 loop, to go next u
+                        }
+                        currentLink = map.distances[tour[u1]][tour[v1]]+map.distances[tour[u2]][tour[v2]];
+                        candidateMove = map.distances[tour[u1]][tour[u2]]+map.distances[tour[v1]][tour[v2]];
+                    
+                        if (currentLink > candidateMove) { // If the move is better, execute it!
+                            assert((currentLink - candidateMove) > 0);
+                            if (map.min_link > map.distances[tour[u1]][tour[u2]])
+                                map.min_link = map.distances[tour[u1]][tour[u2]];
+                            if (map.min_link > map.distances[tour[v1]][tour[v2]])
+                                map.min_link = map.distances[tour[v1]][tour[v2]];
+                            int current = getWeight(map, tour); // DEBUG
+                            reverse_swap2(tour,v1,u2);
+                            int newW = getWeight(map, tour); // DEBUG
+                            updateWhichSlot(map,tour,v1,u2);
+                            improved = true;
+                            iter++;
+                            impro += (currentLink-candidateMove);
+                            impro2 += (current-newW);
+                            if ((currentLink-candidateMove) == (current-newW)) {
+                                std::cerr << map.di
+                            }
+                        }
+                }
+            }
+            if (getCurrTimeK() > startTime+1500) { break; }
+        }
+        std::cerr << "new-opt-iter: " << iter << std::endl;
+        std::cerr << "new-opt-impro: " << impro << std::endl;
+        std::cerr << "new-opt-impro2: " << impro2 << std::endl;
     }
 }
