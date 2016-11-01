@@ -170,7 +170,7 @@ namespace tsp {
                             impro += (currentLink-candidateMove);
                             impro2 += (current-newW);
                             if ((currentLink-candidateMove) == (current-newW)) {
-                                std::cerr << map.di
+                                //std::cerr << map.di
                             }
                         }
                 }
