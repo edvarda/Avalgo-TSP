@@ -39,7 +39,6 @@ namespace tsp {
     	//while(currTime - startTime < 1950){
 		while(iterations > 1){
 
-
     		//1. Pick two new points and reverse them.
     		city1 = rand() % tour.size();
 
@@ -60,7 +59,7 @@ namespace tsp {
     		//2. Evaluate solution. If it is better change it.
     		//Else, still change it but with come probability.
     		int tourLength = evaluate(tour, map, city1, city2);
-    		reverse(tour, city1, city2);
+    		reverseImproved(tour, city1, city2);
     		int alternativeTourLength = evaluate(tour, map, city1, city2);
 
 
@@ -80,7 +79,7 @@ namespace tsp {
     				//Simply do nothing. The tour is already set
     			}
     			else{
-    				reverse(tour, city1, city2);
+    				reverseImproved(tour, city1, city2);
     			}
     		}
     		//3. Decrease temperature.
@@ -119,6 +118,17 @@ namespace tsp {
     	}
 
     }
+    void reverseImproved(std::vector<int> &tour, int city1, int city2) {
+        	int tmp;
+        	int beginning = std::min(city1, city2);
+        	int ending = std::max(city1, city2);
+        	for(int i = 0 ; i < ((ending-beginning)/2)+1 ; i++){
+        		tmp = tour[beginning+i];
+        		tour[beginning+i] = tour[ending-i];
+        		tour[ending-i] = tmp;
+        	}
+
+        }
 
     int evaluate(std::vector<int> &tour, tsp::instance &map , int &city1, int &city2) {
         int totalLength = 0;
