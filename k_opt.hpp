@@ -15,5 +15,7 @@
 
 namespace tsp {
     void two_opt(tsp::instance &map, std::vector<int> &tour);
+    
+    void fast_two_opt(tsp::instance &map, std::vector<int> &tour);
 }
 #endif /* k_opt_hpp */

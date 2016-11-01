@@ -12,6 +12,39 @@
 #include <cassert>
 
 namespace tsp {
+    
+    int testEulerWalk(std::vector<std::vector<bool> > &edges, int size) {
+        std::vector< std::vector<bool> >::iterator row;
+        std::vector<bool>::iterator col;
+        std::vector<bool> v_exists = std::vector<bool>(size, false);
+        for (row = edges.begin(); row != edges.end(); ++row) {
+            for (col = row->begin(); col != row->end(); ++col) {
+                if (*col == true)
+                    v_exists[row - edges.begin()] = true;
+            }
+        }
+        
+        for (auto it = v_exists.begin(); it != v_exists.end(); ++it) {
+            if (*it == false)
+                return -1;
+        }
+        return 1;
+    }
+    
+    int testEulerTour(std::vector<int> &etour,int size) {
+        std::vector<int>::iterator it;
+        std::vector<bool> v_exists = std::vector<bool>(size, false);
+        for (it = etour.begin(); it != etour.end(); ++it) {
+            v_exists[*it] = true;
+        }
+        
+        for (auto it = v_exists.begin(); it != v_exists.end(); ++it) {
+            if (*it == false)
+                return -1;
+        }
+        return 1;
+    }
+
 
     void christofides(tsp::instance &map, std::vector<int> &tour) {
         std::vector<tsp::edge> *mst;
@@ -67,14 +100,20 @@ namespace tsp {
         std::vector<int> eulerTour = std::vector<int>();
         std::vector<std::vector<bool> > edges = std::vector<std::vector<bool> >(map.size);
         
-        for (auto it = edges.begin(); it != edges.end(); it++) {(*it) = std::vector<bool>(map.size,false);}
+        for (auto it = edges.begin(); it != edges.end(); ++it) {(*it) = std::vector<bool>(map.size,false);}
+        int foundEdges = 0;
         for (int i = 0; i < mst->size(); i++) { // Gör om edgelisten. Ja, det är ineffektivt.
             edges[(*mst)[i].u][(*mst)[i].v] = true;
             edges[(*mst)[i].v][(*mst)[i].u] = true;
+            foundEdges++;
         }
-        
+        assert(foundEdges == mst->size());
         current = (*mst)[0].u; //start at some vertex in graph
         int neighbour;
+        
+        if (testEulerWalk(edges, map.size) == -1) {
+            assert(false);
+        } // Edges täcker alla hörn
         
         // Nu ska vi bygga en euler-vandring
         do {
@@ -94,8 +133,22 @@ namespace tsp {
             
         } while (!eulerStack.empty());
         
+        
+        if (testEulerTour(eulerTour, map.size) == -1) {
+            assert(false);
+        }
+        
+        
+        std::vector< std::vector<bool> >::iterator row;
+        std::vector<bool>::iterator col;
+        for (row = edges.begin(); row != edges.end(); ++row) {
+            for (col = row->begin(); col != row->end(); ++col) {
+                assert(*col == false); // alla edges är borttagna
+            }
+        }
+        
         int numbervisited = 0;
-        assert(eulerTour.size() >= map.size);
+        //assert(eulerTour.size() >= map.size);
         // Sen ska vi plocka ut en hamiltoncykel
         
         tour.clear();
@@ -113,13 +166,14 @@ namespace tsp {
     }
     
     int getNeighbour(std::vector<std::vector<bool>> &edges, int v) {
-        for (auto it = edges[v].begin(); it != edges[v].end(); it++) {
+        for (auto it = edges[v].begin(); it != edges[v].end(); ++it) {
                 if (*it == true) {
                     assert(it - edges[v].begin() >= 0);
-                    return (int) (it - edges[v].begin());
+                    return (int) (it - edges[v].begin()); // Return the idx of a neighbour
                 }
         }
-        return -1;
+        return -1; // No neighbours for v left
     }
+    
 }
 
