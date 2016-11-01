@@ -9,6 +9,7 @@
 #include "instance.hpp"
 #include "kruskal.hpp"
 #include "simann.hpp"
+#include "twoopt.hpp"
 #include "christofides.hpp"
 #include "tests.hpp"
 #include "k_opt.hpp"
@@ -67,17 +68,13 @@ int main() {
         std::cin.rdbuf(in.rdbuf());
     }
     
-    
     size_t n;
     std::cin >> n; // Läs in storlek på problemet
     tsp::instance map(n); // Skapar instans-objekt
     std::vector<int> tour;
     tour = std::vector<int>(n);
     
-    /*
-    long int startTime = getCurrTime();
-    sa(tour, map, startTime);
-    */
+
     
     map.readCities(std::cin);
     map.computeDistances();
@@ -88,13 +85,15 @@ int main() {
         };
     }
 
-    /*
+
     map.nneighbour(tour);
-    std::cout << "nneighbour:" << std::endl;
+    //std::cout << "nneighbour:" << std::endl;
+    //printTour(tour);
+    //printTourWeight(tour, map);
+    sa(tour, map, startTime);
+    tsp::two_opt(map,tour);
     printTour(tour);
-    printTourWeight(tour, map);
-    */
-    
+    //printTourWeight(tour, map);
     /*
     std::cout << "mst-walk:" << std::endl;
     std::vector<tsp::edge> *mst;
@@ -102,12 +101,16 @@ int main() {
     tsp::makePreorderWalk(tour, mst);
     printTourWeight(tour, map);
     */
+
+
+
+
+    //Stuff-----------------------------------------------------
+    /*
     if (map.size == 1) {
         std::cout << "0" << std::endl;
         exit(0);
     }
-    
-    
     if (debug) {std::cout << "christofides:" << std::endl;}
     tsp::christofides(map,tour);
     
@@ -116,7 +119,7 @@ int main() {
         tour = std::vector<int>(n);
         map.nneighbour(tour);
         tsp::two_opt(map,tour);
-        printTour(tour);
+        //printTour(tour);
         exit(0);
     }
     
@@ -144,4 +147,5 @@ int main() {
     if (debug) {
         tsp::validateTour(tour, map);
     }
+    */
 }

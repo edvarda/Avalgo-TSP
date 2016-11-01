@@ -16,18 +16,18 @@ namespace tsp {
     	//long int currTime = getCurrTime();//Fetches current time.
 
 		int konstant = 1;
-		int iterations;
-		if(tour.size() > 800){
-			iterations = 1300000;
-		} else if(tour.size() > 400){
-			iterations = 1800000;
-		} else if(tour.size() > 200){
-			iterations = 2500000;
-		} else {
-			iterations = 2500000;
-		}
+        int iterations;
+        if(tour.size() > 800){
+            iterations = 2500000;
+        } else if(tour.size() > 400){
+            iterations = 3000000;
+        } else if(tour.size() > 200){
+            iterations = 3500000;
+        } else {
+            iterations = 4000000;
+        }
 
-		double temperature = 160;
+        double temperature = 4000;
 		double tempDecrPerTurn = temperature/iterations;
 
 		int city1;
@@ -39,20 +39,17 @@ namespace tsp {
     	//while(currTime - startTime < 1950){
 		while(iterations > 1){
 
-
+            /*
+            size_t weight = 0;
+            for (int i = 0; i < tour.size()-1; i++) {
+                weight += map.distances[tour[i]][tour[i+1]];
+            }
+            std::cout << "weight of tour: " << weight << std::endl;
+            */
     		//1. Pick two new points and reverse them.
     		city1 = rand() % tour.size();
-
-    		cityDifference = (rand() % 75) + 1;
-    		if(city1+cityDifference < tour.size()){
-    			city2 = city1+cityDifference;
-    		} else if (city1-cityDifference >= 0) {
-    			city2 = city1-cityDifference;
-    		} else if (city1-1 >=0){
-    			city2 = city1-1;
-    		} else {
-    			city2 = city1+1;
-    		}
+            city2 = rand() % tour.size();
+    		
 
 
     		//reverse(tour, city1, city2);
@@ -60,7 +57,7 @@ namespace tsp {
     		//2. Evaluate solution. If it is better change it.
     		//Else, still change it but with come probability.
     		int tourLength = evaluate(tour, map, city1, city2);
-    		reverse(tour, city1, city2);
+    		reverseImproved(tour, city1, city2);
     		int alternativeTourLength = evaluate(tour, map, city1, city2);
 
 
@@ -80,7 +77,7 @@ namespace tsp {
     				//Simply do nothing. The tour is already set
     			}
     			else{
-    				reverse(tour, city1, city2);
+    				reverseImproved(tour, city1, city2);
     			}
     		}
     		//3. Decrease temperature.
@@ -119,21 +116,26 @@ namespace tsp {
     	}
 
     }
+    void reverseImproved(std::vector<int> &tour, int city1, int city2) {
+        	int tmp;
+        	int beginning = std::min(city1, city2);
+        	int ending = std::max(city1, city2);
+        	for(int i = 0 ; i < ((ending-beginning)/2)+1 ; i++){
+        		tmp = tour[beginning+i];
+        		tour[beginning+i] = tour[ending-i];
+        		tour[ending-i] = tmp;
+        	}
+
+        }
 
     int evaluate(std::vector<int> &tour, tsp::instance &map , int &city1, int &city2) {
         int totalLength = 0;
         int beginning = std::min(city1, city2);
         int ending = std::max(city1, city2);
-        if(beginning-2 >= 1 && ending+2 < tour.size()){
-			for (int i = beginning-2; i < ending+2; i++) {
-				totalLength += map.distances[tour[i-1]][tour[i]];
-			}
-        }
-        else{
-        	for (int i = 1; i < tour.size(); i++) {
-				totalLength += map.distances[tour[i-1]][tour[i]];
-			}
-        }
+
+        totalLength = map.distances[tour[beginning-1]][tour[beginning]] + map.distances[tour[ending]][tour[ending+1]];
+
+       
         return totalLength;
     }
 
