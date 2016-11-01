@@ -94,7 +94,7 @@ namespace tsp {
                     }  
                 }
             }
-            if (getCurrTimeK() > startTime+1000) { break; }
+            if (getCurrTimeK() > startTime+1500) { break; }
         }
     }
 }

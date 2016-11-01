@@ -87,7 +87,9 @@ int main() {
     }
 
 
+    
     map.nneighbour(tour);
+
     //std::cout << "nneighbour:" << std::endl;
     //printTour(tour);
     //printTourWeight(tour, map);
