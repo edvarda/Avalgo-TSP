@@ -131,7 +131,8 @@ int main() {
     if (debug) { std::cerr << "using 2-opt" << std::endl;}
     
     tsp::two_opt(map,tour);
-    
+    //printTour(tour);
+    if (debug) {printTourWeight(tour, map);}
     if (debug) {
         printTourWeight(tour, map);
         std::cerr << "using fast-2-opt" << std::endl;
@@ -147,5 +148,4 @@ int main() {
     if (debug) {
         tsp::validateTour(tour, map);
     }
-    */
 }
