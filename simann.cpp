@@ -18,16 +18,16 @@ namespace tsp {
 		int konstant = 1;
         int iterations;
         if(tour.size() > 800){
-            iterations = 2500000;
-        } else if(tour.size() > 400){
             iterations = 3000000;
-        } else if(tour.size() > 200){
+        } else if(tour.size() > 400){
             iterations = 3500000;
+        } else if(tour.size() > 200){
+            iterations = 4500000;
         } else {
-            iterations = 4000000;
+            iterations = 5000000;
         }
 
-        double temperature = 4000;
+        double temperature = 3500;
 		double tempDecrPerTurn = temperature/iterations;
 
 		int city1;
