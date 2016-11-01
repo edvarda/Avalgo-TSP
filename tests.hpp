@@ -12,6 +12,7 @@
 #include "instance.hpp"
 namespace tsp {
     bool validateTour(std::vector<int> &tour, tsp::instance &map);
+    bool validateEdges(tsp::instance &map);
 }
 #endif /* tests_hpp */
 

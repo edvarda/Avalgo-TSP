@@ -12,11 +12,14 @@
 #include "twoopt.hpp"
 #include "christofides.hpp"
 #include "tests.hpp"
+#include "k_opt.hpp"
 
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sys/time.h>
+#include <cassert>
+
 
 void printTour(std::vector<int> &tour) { // TODO just for testing early
     for (int i = 0; i < tour.size(); i++) {
@@ -56,17 +59,15 @@ int getCurrTime() {
 // to compile in terminal: g++ -g -O2 -static -std=gnu++11 *.cpp -o theprogram. Fuck READMEs
 
 int main() {
-    
     long int startTime = getCurrTime();
-    const bool debug = true;
-    const bool fileIn = true;
-    
-    /*
+
+    const bool debug = false;
+    const bool fileIn = false;
+    std::ifstream in;
     if (fileIn) {
-        std::ifstream in("test1000.in");
+        in = std::ifstream("test1000.in");
         std::cin.rdbuf(in.rdbuf());
     }
-    */
     
     size_t n;
     std::cin >> n; // Läs in storlek på problemet
@@ -78,6 +79,12 @@ int main() {
     
     map.readCities(std::cin);
     map.computeDistances();
+    if (debug) {
+        if (!validateEdges(map)) {
+            std::cerr << "incorrect distances" << std::endl;
+            exit(1);
+        };
+    }
 
 
     map.nneighbour(tour);
@@ -96,14 +103,28 @@ int main() {
     tsp::makePreorderWalk(tour, mst);
     printTourWeight(tour, map);
     */
-    /*
+
+    if (map.size == 1) {
+        std::cout << "0" << std::endl;
+        exit(0);
+    }
     if (debug) {std::cout << "christofides:" << std::endl;}
     tsp::christofides(map,tour);
-    printTour(tour);
+    //tsp::validateTour(tour, map);
+    if (tour.size() != map.size) {
+        tour = std::vector<int>(n);
+        map.nneighbour(tour);
+        tsp::two_opt(map,tour);
+        printTour(tour);
+        exit(0);
+    }
+    
     if (debug) {printTourWeight(tour, map);}
     
+    tsp::two_opt(map,tour);
+    printTour(tour);
+    if (debug) {printTourWeight(tour, map);}
     if (debug) {
-        tsp::validateTour(tour, map);
+        
     }
-    */
 }
