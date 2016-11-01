@@ -38,8 +38,9 @@ namespace tsp {
     }
     
     void updateMinLink(tsp::instance &map, std::vector<int> &tour) {
+        int t;
         int min_found = 10000000; // candidate for min_link
-        for (int t = 0; t < map.size; ++t) {
+        for (t = 0; t < map.size; ++t) {
             int tn = (t+1 % map.size);
             if (map.distances[tour[t]][tour[tn]] < min_found) {
                 min_found = map.distances[tour[t]][tour[tn]];
@@ -55,7 +56,7 @@ namespace tsp {
     }
     
     void updateWhichSlot(tsp::instance &map, std::vector<int> &tour, int from, int to) {
-        for (int t = from-2; t < to+2; ++t) {
+        for (int t = from; t <= to; ++t) {
             map.cities[tour[t]].which_slot = t;
         }
     }
@@ -84,7 +85,14 @@ namespace tsp {
     }
     
     void reverse_swap2(std::vector<int> &tour, int v1, int u2) {
-        std::reverse(tour.begin()+v1,tour.begin()+u2+1);
+        if (v1 > u2) {
+            v1 -= 1;
+            u2 += 1;
+            std::reverse(tour.begin()+u2,tour.begin()+v1+1);
+        } else {
+            u2 = (u2 + 1) % tour.size();
+            std::reverse(tour.begin()+v1,tour.begin()+u2);
+        }
     }
 
 
@@ -101,6 +109,7 @@ namespace tsp {
             //shortest = getWeight(map,tour);
             for ( int i = 0; i < size - 1; i++ ) {
                 for ( int k = i + 1; k < size; k++) {
+                    iter++;
                     before = (i-1);
                     if (before < 0) {before += size;}
                     after = (k+1);
@@ -111,7 +120,6 @@ namespace tsp {
                         candidate = map.distances[tour[before]][tour[k]]+map.distances[tour[i]][tour[after]];
                         assert(candidate > 0);
                         if ( candidate < original ) {
-                            iter++;
                             reverse_swap(tour, i, k);
                             improved = true;
                             impro += (original - candidate);
@@ -119,7 +127,6 @@ namespace tsp {
                     }  
                 }
             }
-            if (getCurrTimeK() > startTime+1000) { break; }
         }
         std::cerr << "old-opt-iter: " << iter << std::endl;
         std::cerr << "old-opt-impro: " << impro << std::endl;
@@ -145,6 +152,7 @@ namespace tsp {
             for (v1 = 0; v1 < map.size; ++v1) {// Loop over tour
                 u1 = (v1 - 1 + map.size) % map.size;
                 for (int j2 = 0; j2 < map.size; ++j2) {
+                        iter++;
                         c2 = map.nbhd[tour[v1]][j2]; // store the j2:th closest city to u.
                         v2 = map.cities[c2].which_slot;
                         u2 = (v2 - 1 + map.size) % map.size;
@@ -164,18 +172,21 @@ namespace tsp {
                             int current = getWeight(map, tour); // DEBUG
                             reverse_swap2(tour,v1,u2);
                             int newW = getWeight(map, tour); // DEBUG
-                            updateWhichSlot(map,tour,v1,u2);
+                            updateWhichSlot(map,tour);
                             improved = true;
-                            iter++;
                             impro += (currentLink-candidateMove);
                             impro2 += (current-newW);
-                            if ((currentLink-candidateMove) == (current-newW)) {
-                                //std::cerr << map.di
+                            if ((currentLink-candidateMove) != (current-newW)) {
+                                std::cerr << "old: " <<  currentLink << std::endl;
+                                std::cerr << "new: " <<  candidateMove << std::endl;
+                                std::cerr << "currentW: " <<  current << std::endl;
+                                std::cerr << "newW: " <<  newW << std::endl;
+                                std::cerr << "1: " << u1 << " " << v1 << " 2: " << u2 << " " << v2 << std::endl;
+                                std::cerr << "----------------" << std::endl;
                             }
                         }
                 }
             }
-            if (getCurrTimeK() > startTime+1500) { break; }
         }
         std::cerr << "new-opt-iter: " << iter << std::endl;
         std::cerr << "new-opt-impro: " << impro << std::endl;

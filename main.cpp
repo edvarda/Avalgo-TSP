@@ -61,7 +61,7 @@ int getCurrTime() {
 int main() {
     long int startTime = getCurrTime();
     const bool debug = true;
-    const bool fileIn = true;
+    const bool fileIn = false;
     std::ifstream in;
     if (fileIn) {
         in = std::ifstream("test1000.in");
@@ -84,15 +84,19 @@ int main() {
             exit(1);
         };
     }
+    
+    if (map.size == 1) {
+        std::cout << "0" << std::endl;
+        exit(0);
+    }
 
-
-    map.nneighbour(tour);
+    //map.nneighbour(tour);
     //std::cout << "nneighbour:" << std::endl;
     //printTour(tour);
     //printTourWeight(tour, map);
-    sa(tour, map, startTime);
-    tsp::two_opt(map,tour);
-    printTour(tour);
+    //sa(tour, map, startTime);
+    //tsp::two_opt(map,tour);
+    //printTour(tour);
     //printTourWeight(tour, map);
     /*
     std::cout << "mst-walk:" << std::endl;
@@ -106,11 +110,9 @@ int main() {
 
 
     //Stuff-----------------------------------------------------
-    /*
-    if (map.size == 1) {
-        std::cout << "0" << std::endl;
-        exit(0);
-    }
+    /**/
+    
+    
     if (debug) {std::cout << "christofides:" << std::endl;}
     tsp::christofides(map,tour);
     
