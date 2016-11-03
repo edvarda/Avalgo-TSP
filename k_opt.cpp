@@ -121,8 +121,7 @@ namespace tsp {
             }
             if (getCurrTimeK() > startTime+1500) { break; }
         }
-        std::cerr << "old-opt-iter: " << iter << std::endl;
-        std::cerr << "old-opt-impro: " << impro << std::endl;
+        
     }
     
     void fast_two_opt(tsp::instance &map, std::vector<int> &tour) {

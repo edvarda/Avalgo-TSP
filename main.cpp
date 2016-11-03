@@ -62,12 +62,13 @@ int main() {
     long int startTime = getCurrTime();
     const bool debug = true;
     const bool fileIn = true;
+    /*
     std::ifstream in;
     if (fileIn) {
         in = std::ifstream("test1000.in");
         std::cin.rdbuf(in.rdbuf());
     }
-    
+    */
     size_t n;
     std::cin >> n; // Läs in storlek på problemet
     tsp::instance map(n); // Skapar instans-objekt
@@ -87,12 +88,14 @@ int main() {
 
 
     
+    
+	//std::vector<tsp::edge> *mst;
+    //mst = tsp::kruskal(map);
+    //tsp::makePreorderWalk(tour, mst);
+    //sa(tour, map, startTime);
+    //tsp::two_opt(map,tour);
     map.nneighbour(tour);
-
-    //std::cout << "nneighbour:" << std::endl;
-    //printTour(tour);
-    //printTourWeight(tour, map);
-    sa(tour, map, startTime);
+    //sa(tour, map, startTime);
     tsp::two_opt(map,tour);
     printTour(tour);
     //printTourWeight(tour, map);
@@ -150,4 +153,5 @@ int main() {
     if (debug) {
         tsp::validateTour(tour, map);
     }
+    */
 }

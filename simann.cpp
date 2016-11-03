@@ -18,21 +18,25 @@ namespace tsp {
 		int konstant = 1;
         int iterations;
         if(tour.size() > 800){
-            iterations = 3000000;
-        } else if(tour.size() > 400){
-            iterations = 3500000;
-        } else if(tour.size() > 200){
             iterations = 4500000;
-        } else {
+        } else if(tour.size() > 400){
             iterations = 5000000;
+        } else if(tour.size() > 200){
+            iterations = 6000000;
+        } else {
+            iterations = 7000000;
         }
 
-        double temperature = 3500;
+        double temperature = 6000;
 		double tempDecrPerTurn = temperature/iterations;
 
 		int city1;
 		int city2;
 		int cityDifference;
+        int beginning = std::min(city1, city2);
+        int ending;
+        int original;
+        int candidate;
     	srand(time(NULL));//Necessary for rng.
 
 
@@ -56,16 +60,17 @@ namespace tsp {
 
     		//2. Evaluate solution. If it is better change it.
     		//Else, still change it but with come probability.
-    		int tourLength = evaluate(tour, map, city1, city2);
-    		reverseImproved(tour, city1, city2);
-    		int alternativeTourLength = evaluate(tour, map, city1, city2);
+            beginning = std::min(city1, city2);
+            ending = std::max(city1, city2);
+    		original = map.distances[tour[beginning-1]][tour[beginning]] + map.distances[tour[ending]][tour[ending+1]];
+    		candidate = map.distances[tour[beginning-1]][tour[ending]] + map.distances[tour[beginning]][tour[ending+1]];
 
 
-    		if(tourLength > alternativeTourLength){
-    			//Simply do nothing. The tour is already set
+    		if(original > candidate){
+    			reverseImproved(tour, city1, city2);
     		} else {
     			//Reset the tour
-    			double delta = tourLength - alternativeTourLength;
+    			double delta = original - candidate;
     			double exponent = delta/temperature;
     			double probability = exp(exponent);
     			double diceRoll = ((double) rand() / (RAND_MAX));
@@ -74,9 +79,6 @@ namespace tsp {
     			//std::cout << "exponent: " << exponent << std::endl;
     			//std::cout << "diceRoll: " << diceRoll << "  probability:" << probability << std::endl;
     			if(diceRoll<=probability){
-    				//Simply do nothing. The tour is already set
-    			}
-    			else{
     				reverseImproved(tour, city1, city2);
     			}
     		}
