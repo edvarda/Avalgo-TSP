@@ -14,12 +14,11 @@
 
 
 namespace tsp {
-
+    
     struct point {
         double x,y; // Coordinates in plane
         int i; // Index in tour
-        point(double x = 0, double y = 0): x(x), y(y), i(-1) {};
-        
+        point(double x = 0, double y = 0): x(x), y(y), i(-1) {};    
     };
 }
 

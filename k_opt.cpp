@@ -15,13 +15,6 @@
 
 namespace tsp {
     
-    void printTour(std::vector<int> &tour) { // TODO just for testing early
-        for (int i = 0; i < tour.size(); i++) {
-            std::cout << tour[i] << ", ";
-        }
-        std::cout << std::endl;
-    }
-    
     int getCurrTimeK() {
         struct timeval tp;
         gettimeofday(&tp, NULL);

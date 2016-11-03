@@ -13,6 +13,7 @@
 #include "christofides.hpp"
 #include "tests.hpp"
 #include "k_opt.hpp"
+#include "util.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -22,46 +23,24 @@
 #include <chrono>
 
 
-void printTour(std::vector<int> &tour) { // TODO just for testing early
-    for (int i = 0; i < tour.size(); i++) {
-        std::cout << tour[i] << std::endl;
-    }
-}
-
 void printTourWeight(std::vector<int> &tour, tsp::instance map) {
-//    size_t weight = 0;
-//    for (int i = 0; i < tour.size()-1; i++) {
-//        weight += map.D[tour[i]][tour[i+1]];
-//    }
     std::cout << "weight of tour: " << getWeight(map,tour) << std::endl;
 }
 
-void printTourWeightToFile(std::vector<int> &tour, tsp::instance map, std::string fileName) {
-    size_t weight = 0;
-    for (int i = 0; i < tour.size()-1; i++) {
-        weight += map.D[tour[i]][tour[i+1]];
-    }
-    std::ofstream myfile;
-	myfile.open ("file.txt");
-	myfile << "weight of tour: " << weight;
-	myfile.close();
-}
-
-int getCurrTime() {
-    struct timeval tp;
-    gettimeofday(&tp, NULL);
-    return (int) (tp.tv_sec * 1000 + tp.tv_usec / 1000);
-}
-
 int main() {
+    
+    // Initialization
+    //-----------------------------------------------------------------------
+    
+    // Create a deadline and record a starttime
     std::chrono::time_point<std::chrono::high_resolution_clock> deadline =
         std::chrono::high_resolution_clock::now() + std::chrono::milliseconds(1900);
     std::chrono::time_point<std::chrono::high_resolution_clock> start_time =
     std::chrono::high_resolution_clock::now();
     
-    long int startTime = getCurrTime();
-    const bool debug = false;
-    const bool fileIn = false;
+    const bool debug = false; // DEBUG FLAG
+    const bool fileIn = false; // REDIRECT FILE TO STDIN
+    
     std::ifstream in;
     if (fileIn) {
         in = std::ifstream("test1000.in");
@@ -69,23 +48,17 @@ int main() {
     }
     
     size_t n;
-    std::cin >> n; // Läs in storlek på problemet
-    tsp::instance map(n); // Skapar instans-objekt
-    std::vector<int> tour;
+    std::cin >> n; // Read instance size
+    tsp::instance map(n); // Create instance object
+    std::vector<int> tour; // Create and initialize tour vector
     tour = std::vector<int>(n);
     
     // Construct instance
     map.readCities(std::cin);
     map.computeDistances();
     
-    if (debug) {
-        if (!validateEdges(map)) {
-            std::cerr << "incorrect distances" << std::endl;
-            exit(1);
-        };
-    }
-    
     // Some trivial cases
+    //-----------------------------------------------------------------------
     if (map.size == 1) {
         std::cout << "0" << std::endl;
         exit(0);
@@ -97,27 +70,13 @@ int main() {
         exit(0);
     }
     
-    // Algorithms
+    // Approximation
+    //-----------------------------------------------------------------------
     
-    if (debug) {std::cout << "christofides:" << std::endl;}
+    if (debug) {std::cout << "running christofides:" << std::endl;}
     tsp::christofides(map,tour);
     
-    if (tour.size() != map.size) {
-        std::cerr << "INCORRECT CHRISTO RESULT" << std::endl;
-    //if (false) {
-        tour = std::vector<int>(n);
-        map.nneighbour(tour);
-        tsp::fast_two_opt(map,tour);
-        tsp::fast_three_opt(map,tour, deadline);
-        printTour(tour);
-        exit(0);
-    }
-    
-    
-    if (debug) {
-        std::cerr << "using fast-2-opt" << std::endl;
-    }
-    
+    if (debug) {std::cerr << "running fast-2-opt" << std::endl;}
     tsp::fast_two_opt(map,tour);
     
     if (debug) {
@@ -125,11 +84,11 @@ int main() {
         printTourWeight(tour, map);
     }
     
-    if (debug) {
-        std::cerr << "using fast-3-opt" << std::endl;
-    }
-    
+    if (debug) {std::cerr << "running fast-3-opt" << std::endl;}
     tsp::fast_three_opt(map,tour, deadline);
+    
+    // Print result & debug information
+    //-----------------------------------------------------------------------
     
     if (debug) {
         tsp::validateTour(tour, map);
@@ -139,10 +98,5 @@ int main() {
         std::cerr << "Total time: " << totalTime.count() << "ms" << std::endl;
     }
     
-    
-    if (!debug) {
-                printTour(tour);
-    }
-    
-    
+    if (!debug) {tsp::printTour(tour);}
 }
