@@ -56,6 +56,13 @@ int main() {
     // Construct instance
     map.readCities(std::cin);
     map.computeDistances();
+    if (debug) {
+        if (!validateEdges(map)) {
+            std::cerr << "incorrect distances" << std::endl;
+            exit(1);
+        };
+    }
+
     
     // Some trivial cases
     //-----------------------------------------------------------------------
@@ -69,6 +76,9 @@ int main() {
         std::cout << "0" << std::endl << "1" << std::endl << "2" << std::endl;
         exit(0);
     }
+
+    //Stuff-----------------------------------------------------
+    /**/
     
     // Approximation
     //-----------------------------------------------------------------------

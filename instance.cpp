@@ -7,6 +7,8 @@
 //
 
 #include "instance.hpp"
+#include "algorithm"
+#include <cmath>
 
 
 namespace tsp {
