@@ -14,14 +14,14 @@ namespace tsp {
         std::vector<bool> visited = std::vector<bool>(map.size, false);
         for (int i = 0; i<tour.size(); i++) {
             if (visited[tour[i]]) {
-                //exit(1);
-                //std::cerr << "Invalid tour: " << i << " visited more than once\n";
+                std::cerr << "Invalid tour: " << i << " visited more than once\n";
+                exit(1);
             }
             visited[tour[i]] = true;
         }
         assert(tour.size() == map.size);
         if (tour.size() != map.size) {
-            //exit(1);
+            exit(1);
         }
         return false;
     }

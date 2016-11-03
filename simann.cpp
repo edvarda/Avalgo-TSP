@@ -37,7 +37,7 @@ namespace tsp {
         int ending;
         int original;
         int candidate;
-    	srand(time(NULL));//Necessary for rng.
+    	srand((unsigned int)time(NULL));//Necessary for rng.
 
 
     	//while(currTime - startTime < 1950){
@@ -62,8 +62,8 @@ namespace tsp {
     		//Else, still change it but with come probability.
             beginning = std::min(city1, city2);
             ending = std::max(city1, city2);
-    		original = map.distances[tour[beginning-1]][tour[beginning]] + map.distances[tour[ending]][tour[ending+1]];
-    		candidate = map.distances[tour[beginning-1]][tour[ending]] + map.distances[tour[beginning]][tour[ending+1]];
+    		original = map.D[tour[beginning-1]][tour[beginning]] + map.D[tour[ending]][tour[ending+1]];
+    		candidate = map.D[tour[beginning-1]][tour[ending]] + map.D[tour[beginning]][tour[ending+1]];
 
 
     		if(original > candidate){
