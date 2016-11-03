@@ -101,10 +101,3 @@ int main() {
     if (!debug) {tsp::printTour(tour);}
 
 }
-
-
-
-
-
-}
-
