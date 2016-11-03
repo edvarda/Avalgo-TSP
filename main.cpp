@@ -46,7 +46,7 @@ int main() {
         in = std::ifstream("test1000.in");
         std::cin.rdbuf(in.rdbuf());
     }
-    
+    */
     size_t n;
     std::cin >> n; // Read instance size
     tsp::instance map(n); // Create instance object
