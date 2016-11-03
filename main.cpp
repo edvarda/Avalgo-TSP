@@ -36,8 +36,8 @@ int main() {
     std::chrono::time_point<std::chrono::high_resolution_clock> start_time =
     std::chrono::high_resolution_clock::now();
     
-    const bool debug = true; // DEBUG FLAG
-    const bool fileIn = true; // REDIRECT FILE TO STDIN
+    const bool debug = false; // DEBUG FLAG
+    const bool fileIn = false; // REDIRECT FILE TO STDIN
     
     std::ifstream in;
     if (fileIn) {
@@ -97,8 +97,8 @@ int main() {
     }
 
     tsp::christofides(map,tour);
-    //sa(tour, map, deadlineSA);
-    //tsp::fast_two_opt(map,tour);
+    sa(tour, map, deadlineSA);
+    tsp::fast_two_opt(map,tour);
     tsp::fast_three_opt(map, tour, deadline);
     if (!debug) {tsp::printTour(tour);}
 
