@@ -17,12 +17,15 @@
 #include <sys/time.h>
 #include <iostream>
 #include <fstream>
+
+#include <chrono>
 #include "instance.hpp"
 
 #endif /* simann_hpp */
 namespace tsp {
 
-    void sa(std::vector<int> &tour, instance map, long startTime);
+    void sa(std::vector<int> &tour, instance map,
+                        const std::chrono::time_point<std::chrono::high_resolution_clock>& deadline);
     int getCurrTime();
     void reverse(std::vector<int> &tour, int city1, int city2);
     void reverseImproved(std::vector<int> &tour, int city1, int city2);

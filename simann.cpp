@@ -11,7 +11,8 @@
 
 namespace tsp {
 
-    void sa(std::vector<int> &tour, instance map, long startTime) {
+    void sa(std::vector<int> &tour, instance map,
+                        const std::chrono::time_point<std::chrono::high_resolution_clock>& deadline) {
 
     	//long int currTime = getCurrTime();//Fetches current time.
 
@@ -37,19 +38,19 @@ namespace tsp {
         int ending;
         int original;
         int candidate;
+        int timeCheckCounter=1000;
     	srand(time(NULL));//Necessary for rng.
 
 
     	//while(currTime - startTime < 1950){
 		while(iterations > 1){
-
-            /*
-            size_t weight = 0;
-            for (int i = 0; i < tour.size()-1; i++) {
-                weight += map.D[tour[i]][tour[i+1]];
+            timeCheckCounter--;
+            if(timeCheckCounter == 0){
+                timeCheckCounter=1000;
+                if (std::chrono::high_resolution_clock::now() > deadline) {
+                    return;
+                }
             }
-            std::cout << "weight of tour: " << weight << std::endl;
-            */
     		//1. Pick two new points and reverse them.
     		city1 = rand() % tour.size();
             city2 = rand() % tour.size();
@@ -62,8 +63,8 @@ namespace tsp {
     		//Else, still change it but with come probability.
             beginning = std::min(city1, city2);
             ending = std::max(city1, city2);
-    		original = map.distances[tour[beginning-1]][tour[beginning]] + map.distances[tour[ending]][tour[ending+1]];
-    		candidate = map.distances[tour[beginning-1]][tour[ending]] + map.distances[tour[beginning]][tour[ending+1]];
+    		original = map.D[tour[beginning-1]][tour[beginning]] + map.D[tour[ending]][tour[ending+1]];
+    		candidate = map.D[tour[beginning-1]][tour[ending]] + map.D[tour[beginning]][tour[ending+1]];
 
 
     		if(original > candidate){

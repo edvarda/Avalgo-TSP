@@ -35,6 +35,8 @@ int main() {
     // Create a deadline and record a starttime
     std::chrono::time_point<std::chrono::high_resolution_clock> deadline =
         std::chrono::high_resolution_clock::now() + std::chrono::milliseconds(1900);
+    std::chrono::time_point<std::chrono::high_resolution_clock> deadlineSA =
+        std::chrono::high_resolution_clock::now() + std::chrono::milliseconds(1000);
     std::chrono::time_point<std::chrono::high_resolution_clock> start_time =
     std::chrono::high_resolution_clock::now();
     
@@ -46,7 +48,7 @@ int main() {
         in = std::ifstream("test1000.in");
         std::cin.rdbuf(in.rdbuf());
     }
-    */
+    
     size_t n;
     std::cin >> n; // Read instance size
     tsp::instance map(n); // Create instance object
@@ -82,20 +84,20 @@ int main() {
     
     // Approximation
     //-----------------------------------------------------------------------
-    
+    //map.nneighbour(tour);
     if (debug) {std::cout << "running christofides:" << std::endl;}
-    tsp::christofides(map,tour);
+    //tsp::christofides(map,tour);
     
     if (debug) {std::cerr << "running fast-2-opt" << std::endl;}
-    tsp::fast_two_opt(map,tour);
+    //tsp::fast_two_opt(map,tour);
     
     if (debug) {
-        tsp::validateTour(tour, map);
-        printTourWeight(tour, map);
+        //tsp::validateTour(tour, map);
+        //printTourWeight(tour, map);
     }
     
     if (debug) {std::cerr << "running fast-3-opt" << std::endl;}
-    tsp::fast_three_opt(map,tour, deadline);
+    //tsp::fast_three_opt(map,tour, deadline);
     
     // Print result & debug information
     //-----------------------------------------------------------------------
@@ -107,6 +109,14 @@ int main() {
         std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time);
         std::cerr << "Total time: " << totalTime.count() << "ms" << std::endl;
     }
-    
+
+    tsp::christofides(map,tour);
+    //sa(tour, map, deadlineSA);
+    //tsp::fast_two_opt(map,tour);
+    tsp::fast_three_opt(map, tour, deadline);
     if (!debug) {tsp::printTour(tour);}
+
+
+
+
 }
