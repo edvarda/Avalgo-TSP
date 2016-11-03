@@ -47,8 +47,8 @@ namespace tsp {
     
     // Bygg upp mst genom att välja minsta edgen, kolla om den kan läggas till utan att skapa en cykel.
     std::vector<edge>* kruskal(instance &map) {
-        std::vector<std::vector<int> > distances = map.distances;
-        size_t V = distances.size();
+        std::vector<std::vector<int> > D = map.D;
+        size_t V = D.size();
         std::vector<edge> *mst = new std::vector<edge>();
         std::vector<subset> subsets = std::vector<subset>(V);
         
@@ -57,9 +57,9 @@ namespace tsp {
         for (int i = 0; i<V;i++) {
             subsets[i] = subset(i,0);
             for (int j = i+1 ; j < V; j++) {
-                //edges[i*j+j] = edge(i,j,distances[i][j]);
+                //edges[i*j+j] = edge(i,j,D[i][j]);
                 if (i != j) {
-                    edges.push_back(edge(i,j,distances[i][j]));
+                    edges.push_back(edge(i,j,D[i][j]));
                 }
             }
         }

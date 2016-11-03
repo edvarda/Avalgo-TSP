@@ -29,7 +29,7 @@ namespace tsp {
     bool validateEdges(tsp::instance &map) {
         for (int i = 0; i < map.size; i++) {
             for (int j = 0; j < map.size; j++) {
-                if (map.distances[i][j] != map.distances[j][i]) {
+                if (map.D[i][j] != map.D[j][i]) {
                     return false;
                 }
             }

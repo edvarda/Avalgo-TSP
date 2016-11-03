@@ -22,14 +22,12 @@ namespace tsp {
             stop * next;
         };
         
-        tour(size_t max) : max_size(max), size(0), stops(std::vector<stop>(max)) {}
+        tour(size_t s) : size(s), stops(std::vector<stop>(s)) {}
         
         
     private:
-        size_t max_size;
         size_t size;
         std::vector<stop> stops;
-        
     };
 }
 

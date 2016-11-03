@@ -42,7 +42,7 @@ namespace tsp {
             /*
             size_t weight = 0;
             for (int i = 0; i < tour.size()-1; i++) {
-                weight += map.distances[tour[i]][tour[i+1]];
+                weight += map.D[tour[i]][tour[i+1]];
             }
             std::cout << "weight of tour: " << weight << std::endl;
             */
@@ -134,7 +134,7 @@ namespace tsp {
         int beginning = std::min(city1, city2);
         int ending = std::max(city1, city2);
 
-        totalLength = map.distances[tour[beginning-1]][tour[beginning]] + map.distances[tour[ending]][tour[ending+1]];
+        totalLength = map.D[tour[beginning-1]][tour[beginning]] + map.D[tour[ending]][tour[ending+1]];
 
        
         return totalLength;

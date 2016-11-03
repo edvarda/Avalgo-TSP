@@ -7,7 +7,7 @@
 //
 
 #include "instance.hpp"
-#include <cmath>
+
 
 namespace tsp {
     
@@ -15,7 +15,7 @@ namespace tsp {
         double x,y;
         for (size_t i = 0; i < size; ++i) {
             in >> x >> y;
-            cities[i] = (point(x,y));
+            c[i] = (point(x,y));
         }
     }
     
@@ -40,24 +40,22 @@ namespace tsp {
         int min_link_candidate = 10000000;
         std::vector<std::vector<distance_to>> helper = std::vector<std::vector<distance_to>>(size);
         for (size_t i = 0; i < size; i++) {
-            distances[i] = (std::vector<int>(size,0));
+            D[i] = (std::vector<int>(size,0));
             helper[i] = (std::vector<distance_to>(size));
             for (size_t j = 0; j < size; j++) {
                 if (i == j) {
-                    distances[i][j] = -1;
+                    D[i][j] = -1;
                     
                     helper[i][j] = distance_to(10000000, (int)j);
                 } else {
-                    dx = cities[i].x - cities[j].x;
-                    dy = cities[i].y - cities[j].y;
-                    distances[i][j] = round(sqrt(dx*dx+dy*dy));
+                    dx = c[i].x - c[j].x;
+                    dy = c[i].y - c[j].y;
+                    D[i][j] = round(sqrt(dx*dx+dy*dy));
                     
-                    helper[i][j] = distance_to(distances[i][j], (int)j);
+                    helper[i][j] = distance_to(D[i][j], (int)j);
                 }
             }
         }
-        
-        
             
         for (size_t i = 0; i < size; i++) {
             sort(helper[i].begin(), helper[i].end());
@@ -86,7 +84,7 @@ namespace tsp {
             nearestStop = -1;
             for (int j = 0 ; j < size ; j++) {
                 if (visited[j]) {continue;}
-                distance = distances[i][j];
+                distance = D[i][j];
                 if (distance < min && distance != -1) {
                     min = distance;
                     nearestStop = j;

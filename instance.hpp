@@ -12,6 +12,8 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <cmath>
+#include <algorithm>
 #include "point.hpp"
 
 
@@ -20,17 +22,17 @@ namespace tsp {
         
     public:
         instance(size_t n) :    size(n),
-                                cities(std::vector<point>(n)),
-                                distances(std::vector<std::vector<int> >(n)),
+                                c(std::vector<point>(n)),
+                                D(std::vector<std::vector<int> >(n)),
                                 nbhd(std::vector<std::vector<int>>(n)) {}
         
         void readCities(std::istream& in);
         void computeDistances();
         void nneighbour(std::vector<int> &tour);
-        std::vector<std::vector<int>> distances;
+        std::vector<std::vector<int>> D;
         std::vector<std::vector<int>> nbhd;
         size_t size;
-        std::vector<point> cities;
+        std::vector<point> c;
         int min_link, max_link;
         
     private:
