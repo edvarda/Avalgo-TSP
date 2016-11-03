@@ -20,7 +20,7 @@ namespace tsp {
         return subsets[u].parent;
     }
     
-    void doUnion(std::vector<subset> &subsets, int u, int v) { // TODO
+    void doUnion(std::vector<subset> &subsets, int u, int v) {
         int root_u = find(subsets, u);
         int root_v = find(subsets, v);
         
@@ -36,7 +36,7 @@ namespace tsp {
     }
     
     //Comparison function to pass to qsort for sorting edges accoring to weight
-    int edgeComp(const edge a, const edge b) { // TODO
+    int edgeComp(const edge a, const edge b) {
         return (a.w > b.w);
     }
     
@@ -45,7 +45,7 @@ namespace tsp {
         return (a.x > b.x);
     }
     
-    // Bygg upp mst genom att välja minsta edgen, kolla om den kan läggas till utan att skapa en cykel.
+    // Build mst
     std::vector<edge>* kruskal(instance &map) {
         std::vector<std::vector<int> > D = map.D;
         size_t V = D.size();
@@ -57,7 +57,6 @@ namespace tsp {
         for (int i = 0; i<V;i++) {
             subsets[i] = subset(i,0);
             for (int j = i+1 ; j < V; j++) {
-                //edges[i*j+j] = edge(i,j,D[i][j]);
                 if (i != j) {
                     edges.push_back(edge(i,j,D[i][j]));
                 }
@@ -70,7 +69,7 @@ namespace tsp {
             edge next = edges[i];
             int u = find(subsets,next.u);
             int v = find(subsets,next.v);
-            if (u != v) { // TODO write oprator= for edge
+            if (u != v) {
                 mst->push_back(next);
                 doUnion(subsets, u ,v);
             }

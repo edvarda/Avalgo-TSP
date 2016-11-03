@@ -14,6 +14,12 @@
 
 namespace tsp {
     
+    /**
+     2-optimisation for a tour, as described in the report
+
+     @param map : problem instance
+     @param tour : current tour
+     */
     void fast_two_opt(tsp::instance &map, std::vector<int> &tour) {
         int iter = 0;
         updateMaxLink(map,tour);
@@ -33,7 +39,7 @@ namespace tsp {
             for (v = 0; v < map.size; ++v) {// Loop over tour
                 ((v-1) < 0) ? u = (int) map.size-1 : u = v-1;
                 
-                for (int j2 = 0; j2 < map.size/10; ++j2) { // TODO this is a parameter. Break it out?
+                for (int j2 = 0; j2 < map.size/10; ++j2) {
                     iter++;
                     c2 = map.nbhd[tour[v]][j2]; // store the j2:th closest city to u.
                     z = map.c[c2].i;
@@ -66,6 +72,13 @@ namespace tsp {
         }
     }
     
+    /**
+     3-optimises the tour, as described in the report
+
+     @param map : The problem instance
+     @param tour : The current tour
+     @param deadline : Deadline for returning a result
+     */
     void fast_three_opt(tsp::instance &map, std::vector<int> &tour,
                         const std::chrono::time_point<std::chrono::high_resolution_clock>& deadline) {
         size_t N = map.size;
@@ -95,7 +108,7 @@ namespace tsp {
                     return;
                 }
                 
-                for (int j2 = 0; j2 < N/4; ++j2) { // TODO this is a param
+                for (int j2 = 0; j2 < N/4; ++j2) {
                     iter++;
                     c2 = map.nbhd[tour[u]][j2]; // store the j2:th closest city to u.
                     
@@ -108,9 +121,9 @@ namespace tsp {
                     }
                     if (map.D[tour[u]][tour[z]]+2*map.min_link >
                         map.D[tour[u]][tour[v]]+map.D[tour[w]][tour[z]]+map.max_link) {
-                        continue; // TODO get it
+                        continue;
                     }
-                    for (int j3 = 0; j3 < N/4; ++j3) { // TODO this is a param
+                    for (int j3 = 0; j3 < N/4; ++j3) {
                         c3 = map.nbhd[tour[v]][j3];
                         y = map.c[c3].i;
                         ((y-1) < 0) ? x = (int) N-1 : x = y-1;
@@ -191,6 +204,14 @@ namespace tsp {
         }
     }
     
+    /**
+     Reverses a portion of the tour
+
+     @param map : The problem instance
+     @param tour : The current tour
+     @param begin : Element to start reversing at (inclusive)
+     @param end Element to end reversing at (inclusive)
+     */
     void swap_two(tsp::instance &map, std::vector<int> &tour, int begin, int end) {
         int swapOperations;
         if (begin <= end) {
@@ -210,6 +231,12 @@ namespace tsp {
         }
     }
     
+    /**
+     Updates the value for the max-weight edge in the current tour
+
+     @param map : The problem instance
+     @param tour : The current tour
+     */
     void updateMaxLink(tsp::instance &map, std::vector<int> &tour) {
         int t;
         size_t N = map.size;
@@ -223,6 +250,12 @@ namespace tsp {
         map.max_link = max_found;
     }
     
+    /**
+     Updates the datastructure for keeping track of the citites current positions in the tour
+
+     @param map : The problem instance
+     @param tour : The current tour
+     */
     void updateWhichSlot(tsp::instance &map, std::vector<int> &tour) {
         for (int t = 0; t < map.size; ++t) {
             map.c[tour[t]].i = t;

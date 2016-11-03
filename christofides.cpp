@@ -12,6 +12,12 @@
 
 namespace tsp {
     
+    /**
+     Implementation of Christofides algorithm as described in the report
+
+     @param map : The problem instance
+     @param tour : The current tour
+     */
     void christofides(tsp::instance &map, std::vector<int> &tour) {
         std::vector<tsp::edge> *mst;
         mst = tsp::kruskal(map); // Get a minimum spanning tree of the graph using kruskals algorithm
@@ -20,6 +26,13 @@ namespace tsp {
         delete mst;
     }
  
+    /**
+     Constructs a set of all vertices with odd degree and does a greedy min-weight matching of them.
+     The resulting edges are added to MST. (Technically making it into something other than a MST, but the name is kept for continuity)
+
+     @param mst : The minimum spanning tree
+     @param map : The problem instance
+     */
     void matchOdds(std::vector<tsp::edge> *mst, tsp::instance &map) {
         std::unordered_map<int, std::vector<edge> > edgeList =
             std::unordered_map<int, std::vector<edge> >();
@@ -58,6 +71,13 @@ namespace tsp {
         return;
     }
     
+    /**
+     Performs Fleurys algorithm, and then computes a Hamiltonian cycle from the result
+
+     @param mst : The minimum-spanning-tree augmentet with the odd-degree matching
+     @param map : The problem instance
+     @param tour : The tour-vector to fill
+     */
     void getHamiltonTour(std::vector<tsp::edge> *mst, tsp::instance &map, std::vector<int> &tour) {
         int current;
         std::vector<int> eulerTour = std::vector<int>();
@@ -85,6 +105,14 @@ namespace tsp {
         }
     }
     
+    /**
+     Helper function for fleurys algorithm. Count the number of nodes reachable from u
+
+     @param edgeList : List of edges in the subgraph
+     @param visited : List of vertices visited
+     @param u : The node from which to start
+     @return : Integer representing the number of nodes reachable from @param u
+     */
     int dfsCount(std::vector<std::vector<int> > &edgeList, std::vector<bool> &visited, int u) {
         int c = 1;
         visited[u] = true;
@@ -96,7 +124,14 @@ namespace tsp {
         return c;
     }
     
-    // Sets an edge between u and v to -1 in the edgeList
+    
+    /**
+     Helper function for Fleurys. Removes edge (u,v) from edgeList
+
+     @param edgeList : List of edges in the subgraph
+     @param u : first vertex
+     @param v : second vertex
+     */
     void removeEdge(std::vector<std::vector<int> > &edgeList, int u, int v) {
         std::vector<int>::iterator it_u;
         for (it_u = edgeList[v].begin(); it_u != edgeList[v].end(); ++it_u) {
@@ -114,11 +149,26 @@ namespace tsp {
         }
     }
     
+    /**
+     Helper function for Fleurys. Adds an edge (u,v) to the subgraph.
+
+     @param edgeList : The edges in the subgraph
+     @param u : first vertex
+     @param v : second vertex
+     */
     void addEdge(std::vector<std::vector<int> > &edgeList, int u, int v) {
         edgeList[v].push_back(u);
         edgeList[u].push_back(v);
     }
     
+    /**
+     Helper function for Fleurys. Determines wether an edge is a valid next edge for the Euler-tour
+
+     @param edgeList : Edges in the subgraph
+     @param u : First vertex of (u,v)
+     @param v : Second vertex of (u,v)
+     @return : Bool saying if edge (u,v) is a valid next edge
+     */
     bool isValidNext(std::vector<std::vector<int> > &edgeList,int u, int v) {
         // v can be a valid next edge in two ways:
         
@@ -151,6 +201,13 @@ namespace tsp {
         
     }
     
+    /**
+     Flaurys algorithm for finding an Euler-tour in a graph. The graph is known to only have vertexes of even degree. The function uses recursive calls to search the graph for valid edges.
+
+     @param edgeList : Edges in the graph
+     @param eulerTour : The vector holding the tour under construction
+     @param u : The next vertex being examined
+     */
     void fleury(std::vector<std::vector<int> > &edgeList, std::vector<int> &eulerTour, int u) {
         // Start at vertex 0
         eulerTour.push_back(u);
