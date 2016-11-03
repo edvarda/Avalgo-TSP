@@ -75,11 +75,6 @@ int main() {
     if (debug) {std::cerr << "running fast-2-opt" << std::endl;}
     //tsp::fast_two_opt(map,tour);
     
-    if (debug) {
-        //tsp::validateTour(tour, map);
-        //printTourWeight(tour, map);
-    }
-    
     if (debug) {std::cerr << "running fast-3-opt" << std::endl;}
     //tsp::fast_three_opt(map,tour, deadline);
     
