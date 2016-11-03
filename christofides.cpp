@@ -107,12 +107,12 @@ namespace tsp {
             edges[(*mst)[i].v][(*mst)[i].u] = true;
             foundEdges++;
         }
-        assert(foundEdges == mst->size());
+        //assert(foundEdges == mst->size());
         current = (*mst)[0].u; //start at some vertex in graph
         int neighbour;
         
         if (testEulerWalk(edges, map.size) == -1) {
-            assert(false);
+            //assert(false);
         } // Edges täcker alla hörn
         
         // Nu ska vi bygga en euler-vandring
@@ -135,7 +135,7 @@ namespace tsp {
         
         
         if (testEulerTour(eulerTour, map.size) == -1) {
-            assert(false);
+            //assert(false);
         }
         
         
@@ -152,7 +152,7 @@ namespace tsp {
         // Sen ska vi plocka ut en hamiltoncykel
         
         tour.clear();
-        assert(tour.size() == 0);
+        //assert(tour.size() == 0);
         std::vector<bool> visited = std::vector<bool>(map.size, false);
         for (auto it = eulerTour.begin(); it != eulerTour.end(); it++) {
             if (!visited[*it]) {
@@ -162,7 +162,7 @@ namespace tsp {
             }
         }
         //assert(numbervisited == map.size);
-        assert(tour.size() <= map.size);
+        //assert(tour.size() <= map.size);
     }
     
     int getNeighbour(std::vector<std::vector<bool>> &edges, int v) {

@@ -122,6 +122,7 @@ namespace tsp {
         	int tmp;
         	int beginning = std::min(city1, city2);
         	int ending = std::max(city1, city2);
+        
         	for(int i = 0 ; i < ((ending-beginning)/2)+1 ; i++){
         		tmp = tour[beginning+i];
         		tour[beginning+i] = tour[ending-i];

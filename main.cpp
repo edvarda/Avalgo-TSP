@@ -61,6 +61,7 @@ int getCurrTime() {
 int main() {
     long int startTime = getCurrTime();
     const bool debug = true;
+
     const bool fileIn = true;
     /*
     std::ifstream in;
@@ -86,8 +87,6 @@ int main() {
         };
     }
 
-
-    
     
 	//std::vector<tsp::edge> *mst;
     //mst = tsp::kruskal(map);
@@ -98,24 +97,16 @@ int main() {
     //sa(tour, map, startTime);
     tsp::two_opt(map,tour);
     printTour(tour);
-    //printTourWeight(tour, map);
-    /*
-    std::cout << "mst-walk:" << std::endl;
-    std::vector<tsp::edge> *mst;
-    mst = tsp::kruskal(map);
-    tsp::makePreorderWalk(tour, mst);
-    printTourWeight(tour, map);
-    */
 
-
-
-
-    //Stuff-----------------------------------------------------
-    /*
     if (map.size == 1) {
         std::cout << "0" << std::endl;
         exit(0);
     }
+
+    //Stuff-----------------------------------------------------
+    /**/
+    
+    
     if (debug) {std::cout << "christofides:" << std::endl;}
     tsp::christofides(map,tour);
     
