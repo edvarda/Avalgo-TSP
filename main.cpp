@@ -23,10 +23,6 @@
 #include <chrono>
 
 
-void printTourWeight(std::vector<int> &tour, tsp::instance map) {
-    std::cout << "weight of tour: " << getWeight(map,tour) << std::endl;
-}
-
 int main() {
     
     // Initialization
@@ -40,8 +36,8 @@ int main() {
     std::chrono::time_point<std::chrono::high_resolution_clock> start_time =
     std::chrono::high_resolution_clock::now();
     
-    const bool debug = false; // DEBUG FLAG
-    const bool fileIn = false; // REDIRECT FILE TO STDIN
+    const bool debug = true; // DEBUG FLAG
+    const bool fileIn = true; // REDIRECT FILE TO STDIN
     
     std::ifstream in;
     if (fileIn) {
@@ -58,13 +54,6 @@ int main() {
     // Construct instance
     map.readCities(std::cin);
     map.computeDistances();
-    if (debug) {
-        if (!validateEdges(map)) {
-            std::cerr << "incorrect distances" << std::endl;
-            exit(1);
-        };
-    }
-
     
     // Some trivial cases
     //-----------------------------------------------------------------------
@@ -78,9 +67,6 @@ int main() {
         std::cout << "0" << std::endl << "1" << std::endl << "2" << std::endl;
         exit(0);
     }
-
-    //Stuff-----------------------------------------------------
-    /**/
     
     // Approximation
     //-----------------------------------------------------------------------

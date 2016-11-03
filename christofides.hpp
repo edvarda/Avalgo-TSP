@@ -13,9 +13,18 @@
 #endif /* christofides_hpp */
 
 namespace tsp {
-
+    
+    //Christofides algorithm functions
     void christofides(tsp::instance &map, std::vector<int> &tour);
     void matchOdds(std::vector<tsp::edge> *mst, tsp::instance &map);
     int getNeighbour(std::vector<std::vector<bool>> &edges, int v);
     void getHamiltonTour(std::vector<tsp::edge> *mst, tsp::instance &map, std::vector<int> &tour);
+    
+    //Fleurys algorithm functions
+    void fleury(std::vector<std::vector<int> > &edgeList, std::vector<int> &eulerTour, int u);
+    int dfsCount(std::vector<std::vector<int> > &edgeList, std::vector<bool> &visited, int u);
+    void removeEdge(std::vector<std::vector<int> > &edgeList, int u, int v);
+    void addEdge(std::vector<std::vector<int> > &edgeList, int u, int v);
+    bool isValidNext(std::vector<std::vector<int> > &edgeList,int u, int v);
+    
 }
