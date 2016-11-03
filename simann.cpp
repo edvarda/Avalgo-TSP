@@ -13,11 +13,9 @@ namespace tsp {
 
     void sa(std::vector<int> &tour, instance map,
                         const std::chrono::time_point<std::chrono::high_resolution_clock>& deadline) {
-
-    	//long int currTime = getCurrTime();//Fetches current time.
-
-		int konstant = 1;
         int iterations;
+
+        //Depending on how large the problem instance is we allow it to run for a maximum number of iterations.
         if(tour.size() > 800){
             iterations = 4500000;
         } else if(tour.size() > 400){
@@ -28,21 +26,17 @@ namespace tsp {
             iterations = 7000000;
         }
 
-        double temperature = 6000;
-		double tempDecrPerTurn = temperature/iterations;
+        double temperature = 6000; //This is the initial temperature
+		double tempDecrPerTurn = temperature/iterations; //This is how much the initial temperature decreases per iteration.
 
 		int city1;
 		int city2;
-		int cityDifference;
-        int beginning = std::min(city1, city2);
+        int beginning;
         int ending;
         int original;
         int candidate;
-        int timeCheckCounter=1000;
+        int timeCheckCounter=1000; //Every thousand iterations. We should check if we are running out of the time designated for SA.
     	srand(time(NULL));//Necessary for rng.
-
-
-    	//while(currTime - startTime < 1950){
 		while(iterations > 1){
             timeCheckCounter--;
             if(timeCheckCounter == 0){
@@ -55,10 +49,6 @@ namespace tsp {
     		city1 = rand() % tour.size();
             city2 = rand() % tour.size();
     		
-
-
-    		//reverse(tour, city1, city2);
-
     		//2. Evaluate solution. If it is better change it.
     		//Else, still change it but with come probability.
             beginning = std::min(city1, city2);
@@ -68,23 +58,18 @@ namespace tsp {
 
 
     		if(original > candidate){
-    			reverseImproved(tour, city1, city2);
+    			reverse(tour, city1, city2);
     		} else {
     			//Reset the tour
     			double delta = original - candidate;
     			double exponent = delta/temperature;
     			double probability = exp(exponent);
     			double diceRoll = ((double) rand() / (RAND_MAX));
-    			//std::cout << "delta: " << delta << std::endl;
-    			//std::cout << "temperature: " << temperature << std::endl;
-    			//std::cout << "exponent: " << exponent << std::endl;
-    			//std::cout << "diceRoll: " << diceRoll << "  probability:" << probability << std::endl;
     			if(diceRoll<=probability){
-    				reverseImproved(tour, city1, city2);
+    				reverse(tour, city1, city2);
     			}
     		}
     		//3. Decrease temperature.
-
     		iterations-=1;
     		temperature -= tempDecrPerTurn;
     	}
@@ -92,32 +77,12 @@ namespace tsp {
 
     }
 
-    int getCurrTime() {
-    	struct timeval tp;
-    	gettimeofday(&tp, NULL);
-    	return (int) (tp.tv_sec * 1000 + tp.tv_usec / 1000);
-    }
-
-
 
     //Returns a reversed version of the tour between city1 and city2.
     //For example, if we current tour (1, 2, 3, 4, 5, 6, 7, 8),
     //and we choose cities 4 and 6,
     //the new tour is (1, 2, 3, 6, 5, 4, 7, 8)
     void reverse(std::vector<int> &tour, int city1, int city2) {
-    	int tmp1;
-    	int tmp2;
-    	int beginning = std::min(city1, city2);
-    	int ending = std::max(city1, city2);
-    	for(int i = 0 ; i < ((ending-beginning)/2)+1 ; i++){
-    		tmp1 = tour[beginning+i];
-    		tmp2 = tour[ending-i];
-    		tour[beginning+i] = tmp2;
-    		tour[ending-i] = tmp1;
-    	}
-
-    }
-    void reverseImproved(std::vector<int> &tour, int city1, int city2) {
         	int tmp;
         	int beginning = std::min(city1, city2);
         	int ending = std::max(city1, city2);
@@ -130,14 +95,13 @@ namespace tsp {
 
         }
 
+    //Returns the length of the two edges e={beginning, beginning-1} and e={ending, ending+1}, where
+    //beginning is the first of the two cities city1 and city2 and ending the second.
     int evaluate(std::vector<int> &tour, tsp::instance &map , int &city1, int &city2) {
         int totalLength = 0;
         int beginning = std::min(city1, city2);
         int ending = std::max(city1, city2);
-
         totalLength = map.D[tour[beginning-1]][tour[beginning]] + map.D[tour[ending]][tour[ending+1]];
-
-       
         return totalLength;
     }
 
