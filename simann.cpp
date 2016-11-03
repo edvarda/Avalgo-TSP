@@ -103,8 +103,6 @@ namespace tsp {
     //For example, if we current tour (1, 2, 3, 4, 5, 6, 7, 8),
     //and we choose cities 4 and 6,
     //the new tour is (1, 2, 3, 6, 5, 4, 7, 8)
-    //TODO: check validity for odd number of elements, prolly wrong.
-    //TODO: Speed up perhaps
     void reverse(std::vector<int> &tour, int city1, int city2) {
     	int tmp1;
     	int tmp2;

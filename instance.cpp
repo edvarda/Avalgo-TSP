@@ -31,12 +31,6 @@ namespace tsp {
         }
     };
     
-    
-    //Comparison function
-    int distComp(const distance_to a, const distance_to b) { // TODO
-        return (a.d > b.d);
-    }
-    
     void instance::computeDistances() {
         double dx, dy;
         int min_link_candidate = 10000000;

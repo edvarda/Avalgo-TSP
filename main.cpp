@@ -9,7 +9,6 @@
 #include "instance.hpp"
 #include "kruskal.hpp"
 #include "simann.hpp"
-#include "twoopt.hpp"
 #include "christofides.hpp"
 #include "tests.hpp"
 #include "k_opt.hpp"
@@ -19,7 +18,6 @@
 #include <fstream>
 #include <string>
 #include <sys/time.h>
-#include <cassert>
 #include <chrono>
 
 
